@@ -1,0 +1,27 @@
+#{extends 'main.html' /}
+#{set title:'COMP235 Labs' /}
+
+<div id="page">
+<div class="content">
+
+  <H3> Upload one or more files: </H3>
+  <br />
+#{form @checkAll(), enctype:'multipart/form-data'}
+  Lab 1.1: <input type="file" name="m11.file"> <br />
+  Lab 1.2: <input type="file" name="m12.file"> <br />
+  Lab 1.3: <input type="file" name="m13.file"> <br /><br />
+
+  Lab 2.1: <input type="file" name="m21.file"> <br />
+  Lab 2.2: <input type="file" name="m22.file"> <br /><br />
+
+  Lab 3.1: <input type="file" name="m31.file"> <br />
+  Lab 3.2: <input type="file" name="m32.file"> <br /><br />
+
+  Lab 4.1: <input type="file" name="m41.file"> <br /><br />
+
+  <input type="submit" name="submit" value="Verify">
+
+#{/form}
+</div>
+</div>
+

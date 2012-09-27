@@ -1,0 +1,24 @@
+#{extends 'main.html' /}
+#{set title:'COMP235 Labs' /}
+
+<div id="page"> 
+  #{list items:allResults, as: 'results'}
+    <div class="content">
+      <h3 style='color:${results.allPassed?"darkgreen":"orange"}'>  
+        ${results.type} -  ${results.allPassed?"All tests Passed.":"Mismatch"}
+      </h3>
+      <p/>
+
+    #{table results.results, as: 'result'}
+      #{column 'Input'}     ${result.input}             #{/column}
+      #{column 'Expected'}  ${result.expected}          #{/column}
+      #{column 'Actual'}    ${result.actual}            #{/column}
+      #{column 'Match?'}    ${result.match?'Yes':'No'}  #{/column}
+    #{/table}
+
+    </div>
+    <p/>
+    <br/>
+
+  #{/list}
+</div>
