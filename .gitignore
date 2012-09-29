@@ -1,0 +1,9 @@
+# IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+
+# directories
+data/
+tmp/
+modules/

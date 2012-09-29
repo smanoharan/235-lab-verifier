@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head>
         <title>#{get 'title' /}</title>
         <meta charset="${_response_encoding}">
@@ -11,7 +11,22 @@
         #{get 'moreScripts' /}
     </head>
     <body>
-        <div id="logo"><H2>COMP235-12B Lab Verifier (beta)</H2></div>
+        <div id="header"><H1>COMP235-12B Lab Verifier (beta)</H1></div>
         #{doLayout /}
+        <div id="footer">
+            <span class="right"> <em>Last Updated: 30/09/2012</em> </span>
+            <span class="clear"> Problems?
+                Please send an email to <a href="mailto:comp235labs@gmail.com">comp235labs@gmail.com</a>.
+            </span>
+        </div>
+        <script type="text/javascript">
+            $('div.n').each(function(){
+                // Get their parent td's height
+                var tdHeight = $(this).closest('td').height();
+
+                // Set the div's height to their parent td's height
+                $(this).height(tdHeight);
+            });
+        </script>
     </body>
 </html>

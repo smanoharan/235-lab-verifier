@@ -1,10 +1,15 @@
 #{extends 'main.html' /}
 #{set title:'COMP235 Labs' /}
 
-<div id="page">
-<div class="content">
+#{if message}
+<div id="message">
+    <h3>${message}</h3>
+</div>
+#{/if}
 
-  <H3> Upload one or more files: </H3>
+<div id="page">
+
+  <H2> Upload one or more files: </H2>
   <br />
 #{form @checkAll(), enctype:'multipart/form-data'}
   Lab 1.1: <input type="file" name="m11.file"> <br />
@@ -19,9 +24,9 @@
 
   Lab 4.1: <input type="file" name="m41.file"> <br /><br />
 
-  <input type="submit" name="submit" value="Verify">
+  <input type="submit" name="submit" value="Verify" class="verify">
 
 #{/form}
 </div>
-</div>
+
 
