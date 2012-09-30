@@ -7,6 +7,7 @@ import tuataraTMSim.Tester;
 import play.mvc.Controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Application extends Controller 
@@ -20,7 +21,15 @@ public class Application extends Controller
     {
       String machinePath = inputMachine.file.getFile().toString();
       String testPath = "app/inputs/t" + type + ".txt";
-      return Tester.testMachine(machinePath, testPath, type);
+      try
+      {
+    	RunResults res = Tester.testMachine(machinePath, testPath, type);
+    	return res;
+      }
+      catch (Exception e)
+      {
+        return new RunResults(false, null, type, Arrays.asList("Exception: [" + e.getClass().getName() + "] " + e.getMessage()));
+      }
     }
 
     public static void checkAll(InputMachine m11, InputMachine m12, InputMachine m13, InputMachine m21, InputMachine m22,
@@ -55,8 +64,10 @@ public class Application extends Controller
             }
           }
           catch (Exception e) 
-          { 
-            renderText("index: " + i + ", qs: " + mtypes[i] + ", error: [" + e.getClass().getName() + "] " + e.getMessage());
+          {
+        	String message = "index: " + i + ", qs: " + mtypes[i] + ", error: [" + e.getClass().getName() + "] " + e.getMessage();
+            render("Application/index.html", message);
+            return;
           }
         }
       }
