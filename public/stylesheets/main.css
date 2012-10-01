@@ -3,13 +3,18 @@ table {
   text-align: center;
 }
 
+sup {
+    color: #A4A4A4;
+    font-size: 0.5em;
+}
+
 table, td {
   border:1px solid #A4A4A4;
   border-collapse:collapse;
 }
 
 td > div.n, .errMsgs tbody tr  {
-  background: rgba(255, 181, 0, 0.41);
+  background: rgba(255, 181, 0, 0.25);
 }
 
 td > div.n{
@@ -39,9 +44,16 @@ h2 {
   font-size: 2em;
 }
 
+h3 {
+    font-size: 1.6em;
+}
 
-#header, #page, #footer, #message {
-  width: 940px;
+#summary h3 {
+    font-size: 1.2em;
+}
+
+#header, #page, #footer, #message, #summary {
+  width: 960px;
   background: #FFFFFF;
   border: 1px solid #D4D4D4;
   margin: 30px auto 30px auto;
@@ -52,7 +64,7 @@ h2 {
   text-align: center;
 }
 
-#page{
+#page, #summary {
   padding: 30px 30px;
   text-align: left;
 }
@@ -76,26 +88,42 @@ h2 {
   text-align: left;
 }
 
-.content{
-    padding-top: 40px;
+#summary .content {
+    padding-left: 30px;
+    padding-top: 20px;
 }
 
-.content:first-child{
+.content {
+    padding-top: 20px;
+    padding-left: 30px;
+}
+
+.content:first-child {
     padding-top: 0px;
 }
 
-.content > h2 {
+.content h3 {
     padding-bottom: 10px;
 }
 
-.content > h2.y {
+.content h3.y {
   color: #006400;
 }
 
-.content > h2.n {
+.content h3.n {
   color: #ffa500;
 }
 
-thead{
+.content h3.e {
+    color: #b41515;
+}
+
+thead {
   background-color: #F9F9F9;
+}
+
+a.summary:link, a.summary:visited, a.summary:hover, a.summary:active {
+
+    color: inherit;
+    font-size: inherit;
 }
