@@ -1,0 +1,109 @@
+@(results : java.util.List[ResultsList[RunResult]])
+
+@* reusable block for the result summaries *@
+@summary(error: Boolean, allPassed: Boolean, lab: String) = {
+    <H3 class="@if(error){e} else{@if(allPassed) {y} else{n}}">
+        <a href="#@{lab}" class="summary">
+            @{lab} - @if(error){Error} else{@if(allPassed) {All tests Passed} else{Mismatch}}
+        </a>
+    </H3>
+}
+
+@* reusable block for the result headings *@
+@heading(error: Boolean, allPassed: Boolean, lab: String) = {
+    <H3 class="@if(error){e} else{@if(allPassed) {y} else{n}}">
+        <a name="@{lab}" class="summary">
+            @{lab} - @if(error){Error} else{@if(allPassed) {All tests Passed} else{Mismatch}}
+        </a>
+    </H3>
+}
+
+@main("Results") {
+
+    <div id="summary">
+        <H2>Summary:</H2>
+        <div class="content">
+            @for(result <- results) {
+                @summary(result.errors != null, result.allPassed, result.`type`)
+            }
+        </div>
+    </div>
+
+    <div id="page">
+        <H2>Details: </H2>
+        @for(result <- results) {
+            <div class="content">
+                @heading(result.errors != null, result.allPassed, result.`type`)
+
+                @if(result.errors != null) {
+                    <table class="errMsg">
+                        <thead>
+                            <tr>
+                                <td>Errors</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(error <- result.errors) {
+                                <tr>
+                                    <td>
+                                        @{error}
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                @if(result.warnings != null) {
+                    <table class="errMsg">
+                        <thead>
+                            <tr>
+                                <th>Warnings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(error <- result.errors) {
+                            <tr>
+                                <td>
+                                @{error}
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+
+                @if(result.results != null) {
+                    <table class="results">
+                        <thead>
+                            <tr>
+                                <th>Input</th>
+                                <th>Expected</th>
+                                <th>Actual</th>
+                                <th>Match?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for(res <- result.results) {
+                            <tr class="@if(res.`match`){y} else{n}">
+                                <td>
+                                    @{res.input}
+                                </td>
+                                <td>
+                                    @{res.expected}
+                                </td>
+                                <td>
+                                    @{res.actual}
+                                </td>
+                                <td>
+                                    @if(res.`match`){Yes} else{No}
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        }
+    </div>
+}

@@ -3,14 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
+GET     /                           controllers.Application.index()
 
-# Ignore favicon requests
-GET     /favicon.ico                            404
+POST    /checkall                  controllers.Application.checkAll()
 
-# Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
-POST    /                                       Application.check
-
-# Catch all
-*       /{controller}/{action}                  {controller}.{action}
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

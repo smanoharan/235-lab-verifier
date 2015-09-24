@@ -1,0 +1,25 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>@title - COMP235 Lab Checker</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    </head>
+    <body>
+        <header>
+            <h1>COMP235 Lab Verifier <sup>(beta)</sup></h1>
+        </header>
+
+        @content
+
+        <footer>
+            <span class="right"> <em>Last Updated: 25/09/2015</em></span>
+            <span class="clear"> Problems?
+                Please send an email to <a href="mailto:comp235labs@@gmail.com">comp235labs@@gmail.com</a>.
+            </span>
+        </footer>
+    </body>
+</html>
