@@ -2,9 +2,9 @@ package controllers;
 
 import models.RunResult;
 import tuataraTMSim.CA_Tape;
-import tuataraTMSim.TM_Simulator;
 import tuataraTMSim.TMachine;
 import tuataraTMSim.Tape;
+import tuataramods.TM_Simulator;
 
 /**
  * Test a Turing machine with a single test case, for labs 1.1 to 4.1
@@ -26,7 +26,7 @@ public class NormalTestRunner extends AbstractTestRunner<RunResult>
             boolean didHalt = sim.runUntilHalt(Tester.MAX_ITER, true);
             if (didHalt)
             {
-                act = sim.getTapeString();
+                act = sim.getTape().toString().replaceAll("_*$", "");
                 match = (act.equals(exp));
             }
             else
