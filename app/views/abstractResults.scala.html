@@ -26,6 +26,10 @@
             @for(result <- results) {
                 @summary(result.errors != null, result.allPassed, result.`type`)
             }
+
+            @if(lab42result != null) {
+                @summary(lab42result.errors != null, lab42result.allPassed, lab42result.`type`)
+            }
         </div>
     </div>
 
@@ -36,7 +40,7 @@
                 @heading(result.errors != null, result.allPassed, result.`type`)
 
                 @if(result.errors != null) {
-                    <table class="errMsg">
+                    <table class="errMsgs">
                         <thead>
                             <tr>
                                 <td>Errors</td>
@@ -55,7 +59,7 @@
                 }
 
                 @if(result.warnings != null) {
-                    <table class="errMsg">
+                    <table class="errMsgs">
                         <thead>
                             <tr>
                                 <th>Warnings</th>
@@ -112,7 +116,7 @@
                 @heading(lab42result.errors != null, lab42result.allPassed, "4.2")
 
                 @if(lab42result.errors != null) {
-                    <table class="errMsg">
+                    <table class="errMsgs">
                         <thead>
                             <tr>
                                 <td>Errors</td>
