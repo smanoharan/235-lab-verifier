@@ -1,9 +1,21 @@
+logs
+target
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+
+project/project
+project/target
+tmp
+dist
+.cache
+data/
+modules/
+
 # IntelliJ IDEA
 *.iml
 *.ipr
 *.iws
-
-# directories
-data/
-tmp/
-modules/

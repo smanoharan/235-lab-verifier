@@ -1,7 +1,11 @@
 package controllers;
 
 import models.Lab42RunResult;
-import tuataraTMSim.*;
+import tuataraTMSim.CA_Tape;
+import tuataraTMSim.TMSimulatorState;
+import tuataraTMSim.TMachine;
+import tuataraTMSim.Tape;
+import tuataramods.TM_Simulator;
 
 /**
  * Test a Turing machine with a single test case, for lab 4.2
