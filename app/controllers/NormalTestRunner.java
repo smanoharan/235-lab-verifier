@@ -26,7 +26,7 @@ public class NormalTestRunner extends AbstractTestRunner<RunResult>
             boolean didHalt = sim.runUntilHalt(Tester.MAX_ITER, true);
             if (didHalt)
             {
-                act = sim.getTape().toString().replaceAll("_*$", "");
+                act = sim.getTapeString();
                 match = (act.equals(exp));
             }
             else

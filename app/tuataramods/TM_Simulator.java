@@ -53,16 +53,25 @@ public class TM_Simulator extends tuataraTMSim.TM_Simulator
         return errMsg;
     }
 
+
     /**
-     * Executes the machine, running until it either halts, encounters a problem or maxSteps is reached.
+     * Runs until the machine halts.  Returns true only if the machine terminates successfully with the
+     * head parked within the specified number of steps.
+     * <br>
+     * Modified from the original Tuatara method to work the same as the GUI - the Tuatara version of this method
+     * doesn't catch any exceptions, instead using its own methods to detect success of failure, which causes
+     * some inconsistency in a small number of cases. This version works in the same way as the code that runs
+     * when the 'execute' button is pressed in Tuatara, so should be more consistent.
      *
-     * @param maxSteps The maximum number of machine iterations allowed for the computation (0 for no limit).
-     *                 If this number is reached, the computation will be aborted and will return false.
+     * @param maxSteps        The maximum number of machine iterations allowed for the computation (0 for no limit).
+     *                        If this number is reached, the computation will be aborted and will return false.
+     * @param doConsoleOutput Determines if we output the configurations and computation result to standard out console.
      * @return True if the machine halts with the head parked. An exception will be thrown for know errors (e.g. going
      * past the start of the tape). Anything else will return false (including not terminating in the given number of
      * steps).
      */
-    private boolean executeMachine(int maxSteps) throws NoStartStateException, TapeBoundsException, UndefinedTransitionException
+    @Override
+    public boolean runUntilHalt(int maxSteps, boolean doConsoleOutput) throws NoStartStateException, TapeBoundsException, UndefinedTransitionException
     {
         try
         {
@@ -82,78 +91,40 @@ public class TM_Simulator extends tuataraTMSim.TM_Simulator
             errMsg = "";
             return true;
         }
-        catch (TapeBoundsException e)
+        catch (TapeBoundsException | UndefinedTransitionException | NoStartStateException e)
         {
-            this.errMsg = "R/W head went past the start of the tape";
-            throw e;
-        }
-        catch (UndefinedTransitionException e)
-        {
+            // Anything that indicates the machine failed, pass it up to the caller
             this.errMsg = e.getMessage();
             throw e;
         }
-        catch (NoStartStateException e)
-        {
-            this.errMsg = "No start state";
-            throw e;
-        }
-    }
-
-    /**
-     * Runs until the machine halts.  Returns true only if the machine terminates successfully with the
-     * head parked within the specified number of steps.
-     * <br>
-     * Modified from the original Tuatara method to work the same as the GUI - the Tuatara version of this method
-     * doesn't catch any exceptions, instead using its own methods to detect success of failure, which causes
-     * some inconsistency in a small number of cases. This version works in the same way as the code that runs
-     * when the 'execute' button is pressed in Tuatara, so should be more consistent.
-     *
-     * @param maxSteps        The maximum number of machine iterations allowed for the computation (0 for no limit).
-     *                        If this number is reached, the computation will be aborted and will return false.
-     * @param doConsoleOutput Determines if we output the configurations and computation result to standard out console.
-     */
-    @Override
-    public boolean runUntilHalt(int maxSteps, boolean doConsoleOutput)
-    {
-        boolean passed;
-        try
-        {
-            passed = this.executeMachine(maxSteps);
-        }
-        catch (TapeBoundsException | UndefinedTransitionException | NoStartStateException e)
-        {
-            passed = false;
-        }
-
-        return passed;
     }
 
     @Override
-    public TMSimulatorState runUntilHaltForLab4Part2(int maxSteps, String exp) throws NoStartStateException
+    public TMSimulatorState runUntilHaltForLab4Part2(int maxSteps, String exp) throws NoStartStateException, TapeBoundsException, UndefinedTransitionException
     {
         boolean ignoreOutput = exp.equals("-");
         this.setCurrentState(this.getMachine().getStartState());
 
-        boolean passed = false;
+        boolean passed;
 
         try
         {
-            passed = this.executeMachine(maxSteps);
+            passed = this.runUntilHalt(maxSteps, false);
         }
-        catch (TapeBoundsException | NoStartStateException e)
-        {
-            passed = false;
-        }
-        catch (UndefinedTransitionException e)
+        catch (TapeBoundsException | UndefinedTransitionException e)
         {
             if (ignoreOutput)
             {
                 passed = true;
             }
+
+            else throw e;
         }
 
         TMSimulatorState state = new TMSimulatorState(this.isHalted(), this.getTape().isParked(),
-                this.getCurrentState().getLabel(), passed, passed ? this.getTapeString() : this.getErrMsg());
+                this.getCurrentState().getLabel(),
+                ignoreOutput ? passed : passed && exp.equals(this.getTapeString()),
+                passed ? this.getTapeString() : this.getErrMsg());
 
         return state;
     }

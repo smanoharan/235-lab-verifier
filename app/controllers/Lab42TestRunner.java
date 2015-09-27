@@ -1,10 +1,7 @@
 package controllers;
 
 import models.Lab42RunResult;
-import tuataraTMSim.CA_Tape;
-import tuataraTMSim.TMSimulatorState;
-import tuataraTMSim.TMachine;
-import tuataraTMSim.Tape;
+import tuataraTMSim.*;
 import tuataramods.TM_Simulator;
 
 /**
@@ -28,7 +25,17 @@ public class Lab42TestRunner extends AbstractTestRunner<Lab42RunResult>
         }
         catch (Exception e)
         {
-            return new Lab42RunResult(e.getMessage(), exp, input, false, false, false, "-");
+            boolean halted;
+            try
+            {
+                halted = sim.isHalted();
+            }
+            catch (NoStartStateException e1)
+            {
+                halted = false;
+            }
+
+            return new Lab42RunResult(e.getMessage(), exp, input, false, halted, sim.getTape().isParked(), "-");
         }
     }
 }
