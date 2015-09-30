@@ -105,23 +105,40 @@ public class TM_Simulator extends tuataraTMSim.TM_Simulator
         boolean ignoreOutput = exp.equals("-");
         this.setCurrentState(this.getMachine().getStartState());
 
-        boolean passed;
+        boolean passed, halted;
 
         try
         {
             passed = this.runUntilHalt(maxSteps, false);
+
+            // Passing obv means the machine halted, while not passing means it took too many steps, so didn't halt.
+            halted = passed;
+
+            // Cases where the output doesn't matter mean the function being computed is undefined for the particular
+            // input. In these case the machine should terminate "without completing a computation", i.e., not end in an
+            // accepting state while the head is parked.
+            if (ignoreOutput && passed)
+            {
+                passed = false;
+                this.errMsg = "Computation completed (i.e. in halt state with the head parked) when it shouldn't have.";
+            }
         }
-        catch (TapeBoundsException | UndefinedTransitionException e)
+        catch (UndefinedTransitionException e)
         {
+            // Doesn't matter if we're not in an accepting state and/or the head isn't parked when the the function
+            // being computed is undefined for the particular input (i.e. when output is being ignored).
             if (ignoreOutput)
             {
                 passed = true;
+                halted = this.isHalted();
             }
-
-            else throw e;
+            else
+            {
+                throw e;
+            }
         }
 
-        TMSimulatorState state = new TMSimulatorState(this.isHalted(), this.getTape().isParked(),
+        TMSimulatorState state = new TMSimulatorState(halted, this.getTape().isParked(),
                 this.getCurrentState().getLabel(),
                 ignoreOutput ? passed : passed && exp.equals(this.getTapeString()),
                 passed ? this.getTapeString() : this.getErrMsg());
