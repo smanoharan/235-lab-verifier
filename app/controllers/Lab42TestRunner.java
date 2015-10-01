@@ -25,7 +25,8 @@ public class Lab42TestRunner extends AbstractTestRunner<Lab42RunResult>
         }
         catch (Exception e)
         {
-            boolean halted;
+            boolean halted, parked;
+
             try
             {
                 halted = sim.isHalted();
@@ -35,7 +36,18 @@ public class Lab42TestRunner extends AbstractTestRunner<Lab42RunResult>
                 halted = false;
             }
 
-            return new Lab42RunResult(e.getMessage(), exp, input, false, halted, sim.getTape().isParked(), "-");
+            if (e instanceof TapeBoundsException)
+            {
+                // Going off the edge of the tape clearly isn't parked (but the tape will think it is, so it must be
+                // manually set to false)
+                parked = false;
+            }
+            else
+            {
+                parked = sim.getTape().isParked();
+            }
+
+            return new Lab42RunResult(e.getMessage(), exp, input, false, halted, parked, "-");
         }
     }
 }
